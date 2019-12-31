@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane fx:id="layout" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tanveer.controllers.MainController">
+
+
+    <center>
+        <HBox alignment="center" prefHeight="367.0" prefWidth="972.0" spacing="100">
+            <Button fx:id="dashBoardBtn" stylesheets="@style.css">
+                <graphic>
+                    <ImageView fitHeight="200.0" fitWidth="150.0">
+                        <image>
+                            <Image url="@/icons/dashboard.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="purchasesBtn" onAction="#showPurchaseStage" stylesheets="@style.css">
+                <graphic>
+                    <ImageView fitHeight="150.0" fitWidth="150.0">
+                        <image>
+                            <Image url="@/icons/purchases.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="expansesBtn" stylesheets="@style.css">
+                <graphic>
+                    <ImageView fitHeight="150.0" fitWidth="150.0">
+                        <image>
+                            <Image url="@/icons/expenses.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="saleBtn" stylesheets="@style.css">
+                <graphic>
+                    <ImageView fitHeight="150.0" fitWidth="150.0">
+                        <image>
+                            <Image url="@/icons/sale.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+    </center>
+   <top>
+      <MenuBar prefHeight="29.0" prefWidth="804.0" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Setting" />
+                  <MenuItem mnemonicParsing="false" text="close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+</BorderPane>

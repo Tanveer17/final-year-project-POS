@@ -1,9 +1,10 @@
-package com.tanveer.entities;
+package com.tanveer.entities.list;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.control.Button;
 
 import java.time.LocalDate;
 
@@ -16,6 +17,7 @@ public class PurchaseItem {
     private DoubleProperty totalPrice = new SimpleDoubleProperty();
     private DoubleProperty pricePaid = new SimpleDoubleProperty();
     private DoubleProperty priceRem  = new SimpleDoubleProperty();
+    private Button editButton;
 
     public PurchaseItem(int itemId, int purchaseId, LocalDate purchaseDate, double pricePerMeter, int noOfMetersPurchased,
                         double totalPrice, double pricePaid, double priceRem){
@@ -27,6 +29,8 @@ public class PurchaseItem {
         this.setTotalPrice(totalPrice);
         this.setPricePaid(pricePaid);
         this.setPriceRem(priceRem);
+        this.editButton = new Button("Edit");
+        this.editButton.setId("button" + this.itemId.get());
     }
 
     public PurchaseItem(LocalDate purchaseDate, double pricePerMeter, int noOfMetersPurchased,
@@ -37,6 +41,8 @@ public class PurchaseItem {
         this.setTotalPrice(totalPrice);
         this.setPricePaid(pricePaid);
         this.setPriceRem(priceRem);
+        this.editButton = new Button("Edit");
+        this.editButton.setId("button" + this.itemId.get());
     }
 
 
@@ -132,5 +138,11 @@ public class PurchaseItem {
         this.priceRem.set(priceRem);
     }
 
+    public Button getEditButton() {
+        return editButton;
+    }
 
+    public void setEditButton(Button editButton) {
+        this.editButton = editButton;
+    }
 }

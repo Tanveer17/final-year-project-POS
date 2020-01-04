@@ -36,7 +36,7 @@ public class MainController {
     public void showPurchaseStage() throws Exception{
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/purchase.fxml"));
-        Scene scene = new Scene(root,1000,600);
+        Scene scene = new Scene(root,1200,600);
         stage.setTitle("Purchases");
         stage.setScene(scene);
         stage.show();

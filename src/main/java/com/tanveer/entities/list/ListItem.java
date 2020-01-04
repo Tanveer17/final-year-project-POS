@@ -1,4 +1,4 @@
-package com.tanveer.entities;
+package com.tanveer.entities.list;
 
 public class ListItem {
     private int id;
@@ -6,6 +6,10 @@ public class ListItem {
 
     public ListItem(int id, String name) {
         this.id = id;
+        this.name = name;
+    }
+
+    public ListItem(String name) {
         this.name = name;
     }
 

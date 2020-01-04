@@ -43,4 +43,14 @@ public class MainController {
 
     }
 
+    @FXML
+    public void showExpansesStage() throws Exception{
+        Stage stage  = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/expanses.fxml"));
+        Scene scene = new Scene(root,800,600);
+        stage.setTitle("Expanses");
+        stage.setScene(scene);
+        stage.show();
+    }
+
 }

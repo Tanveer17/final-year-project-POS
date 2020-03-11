@@ -2,12 +2,14 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToolBar?>
@@ -19,7 +21,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="parent" prefHeight="617.0" prefWidth="836.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tanveer.controllers.PurchaseController">
+<BorderPane fx:id="parent" prefHeight="617.0" prefWidth="1311.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tanveer.controllers.PurchaseController">
 
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
@@ -116,21 +118,50 @@
         </HBox>
     </center>
    <bottom>
-      <TitledPane fx:id="statsSection" collapsible="false" prefHeight="151.0" prefWidth="237.0" text="Stats" BorderPane.alignment="CENTER">
-         <content>
-            <AnchorPane prefHeight="116.0" prefWidth="834.0">
-               <children>
-                  <Label fx:id="itemTotalPaidLabel" layoutX="119.0" layoutY="7.0" prefHeight="16.0" prefWidth="262.0" text="null" />
-                  <Label fx:id="itemTotalPaidFigure" layoutX="413.0" layoutY="7.0" prefHeight="16.0" prefWidth="137.0" text="null" />
-                  <Label fx:id="itemTotalRemLabel" layoutX="119.0" layoutY="30.0" prefHeight="16.0" prefWidth="371.0" text="null" />
-                  <Label fx:id="itemTotalRemFigure" layoutX="413.0" layoutY="30.0" prefHeight="16.0" prefWidth="113.0" text="null" />
-                  <Label layoutX="119.0" layoutY="54.0" prefHeight="16.0" prefWidth="121.0" text="Grand Total Paid" />
-                  <Label fx:id="grandTotalPaid" layoutX="413.0" layoutY="54.0" prefHeight="16.0" prefWidth="95.0" text="null" />
-                  <Label layoutX="119.0" layoutY="76.0" text="Grand Total remaining" />
-                  <Label fx:id="grandTotalRem" layoutX="413.0" layoutY="76.0" prefHeight="16.0" prefWidth="95.0" text="null" />
-               </children>
-            </AnchorPane>
-         </content></TitledPane>
+      <SplitPane fx:id="stats" dividerPositions="0.5">
+         <items>
+            <TitledPane fx:id="statsSection" animated="false" collapsible="false" text="Stats">
+               <content>
+                        <AnchorPane prefHeight="113.0" prefWidth="585.0">
+                           <children>
+                        <Group layoutX="150.0" layoutY="7.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                                    <Label fx:id="itemTotalPaidLabel" prefHeight="16.0" prefWidth="262.0" text="null" />
+                                    <Label fx:id="itemTotalPaidFigure" layoutX="294.0" prefHeight="16.0" prefWidth="137.0" text="null" />
+                                    <Label fx:id="itemTotalRemLabel" layoutY="23.0" prefHeight="16.0" prefWidth="371.0" text="null" />
+                                    <Label fx:id="itemTotalRemFigure" layoutX="294.0" layoutY="23.0" prefHeight="16.0" prefWidth="113.0" text="null" />
+                                    <Label layoutY="47.0" prefHeight="16.0" prefWidth="121.0" text="Grand Total Paid" />
+                                    <Label fx:id="grandTotalPaid" layoutX="294.0" layoutY="47.0" prefHeight="16.0" prefWidth="95.0" text="null" />
+                                    <Label layoutY="69.0" text="Grand Total remaining" />
+                                    <Label fx:id="grandTotalRem" layoutX="294.0" layoutY="69.0" prefHeight="16.0" prefWidth="95.0" text="null" />
+                           </children>
+                        </Group>
+                           </children>
+                        </AnchorPane>
+               </content>
+            </TitledPane>
+            <TitledPane fx:id="stockSection" animated="false" collapsible="false" prefHeight="140.0" prefWidth="298.0" text="Stock">
+              <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="128.0" prefWidth="255.0">
+                     <Group AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="0.0">
+                        <children>
+                            <Label prefHeight="16.0" prefWidth="262.0" text="Total Meter Purchases" />
+                            <Label fx:id="totalMeterPurchasesLabel" layoutX="294.0" prefHeight="16.0" prefWidth="187.0" text="null" />
+                            <Label layoutY="23.0" prefHeight="16.0" prefWidth="371.0" text="Total Pieces Purchases" />
+                            <Label fx:id="totalPiecesPurchasesLabel" layoutX="294.0" layoutY="23.0" prefHeight="16.0" prefWidth="113.0" text="null" />
+                            <Label layoutY="47.0" prefHeight="16.0" prefWidth="173.0" text="Currently In Stock Meters" />
+                            <Label fx:id="currentlyInStockMetersLabel" layoutX="294.0" layoutY="47.0" prefHeight="16.0" prefWidth="95.0" text="null" />
+                            <Label layoutY="69.0" prefHeight="16.0" prefWidth="189.0" text="Currently In Stock Pieces" />
+                            <Label fx:id="currentlyInStockPiecesLabel" layoutX="294.0" layoutY="69.0" prefHeight="16.0" prefWidth="95.0" text="null" />
+                        </children>
+                     </Group>
+                  </AnchorPane>
+              </content>
+            </TitledPane>
+         </items>
+      </SplitPane>
+
+
    </bottom>
     
 

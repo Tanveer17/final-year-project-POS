@@ -1,4 +1,4 @@
-package com.tanveer.entities.list;
+package com.tanveer.model.purchases;
 
 public class ListItem {
     private int id;

@@ -34,6 +34,10 @@
 -fx-background-color:purple;
 }
 
+#inventoryBtn{
+-fx-background-color:purple;
+}
+
 .button
 {
 -fx-background-color : #F3F3F3;

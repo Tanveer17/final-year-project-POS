@@ -18,6 +18,8 @@ public class MainController {
     private Button purchasesBtn;
     @FXML
     private Button saleBtn;
+    @FXML
+    private Button inventoryBtn;
 
 
     public void initialize(){
@@ -25,11 +27,12 @@ public class MainController {
 
     }
 
-    public void setCursors(){
+    private void setCursors(){
         expansesBtn.setCursor(Cursor.HAND);
         dashBoardBtn.setCursor(Cursor.HAND);
         purchasesBtn.setCursor(Cursor.HAND);
         saleBtn.setCursor(Cursor.HAND);
+        inventoryBtn.setCursor(Cursor.HAND);
     }
 
     @FXML
@@ -47,10 +50,32 @@ public class MainController {
     public void showExpansesStage() throws Exception{
         Stage stage  = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/expanses.fxml"));
-        Scene scene = new Scene(root,800,600);
+        Scene scene = new Scene(root,800,655);
         stage.setTitle("Expanses");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
+    }
+
+    @FXML
+    public void showSaleStage() throws Exception{
+        Stage stage = new Stage();
+        Parent root  = FXMLLoader.load(getClass().getResource("/fxml/sales.fxml"));
+        Scene scene = new Scene(root,800,655);
+        stage.setTitle("SALES");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    public void showInventoryStage() throws Exception{
+        Stage stage = new Stage();
+        Parent root  = FXMLLoader.load(getClass().getResource("/fxml/inventory.fxml"));
+        Scene scene = new Scene(root,800,655);
+        stage.setTitle("SALES");
+        stage.setScene(scene);
+        stage.show();
+
     }
 
 }

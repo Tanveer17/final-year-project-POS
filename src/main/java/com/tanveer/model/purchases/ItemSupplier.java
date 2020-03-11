@@ -1,4 +1,4 @@
-package com.tanveer.entities.list;
+package com.tanveer.model.purchases;
 
 import java.util.List;
 
@@ -6,6 +6,14 @@ public class ItemSupplier {
     private int id;
     private String name;
     private String address;
+    private String phoneNumber;
+
+    public ItemSupplier(int id, String name, String address, String phoneNumber) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
 
     public ItemSupplier(int id, String name, String address) {
         this.id = id;
@@ -14,9 +22,10 @@ public class ItemSupplier {
 
     }
 
-    public ItemSupplier(String name, String address) {
+    public ItemSupplier(String name, String address,String phoneNumber) {
         this.name = name;
         this.address = address;
+        this.phoneNumber = phoneNumber;
 
     }
 

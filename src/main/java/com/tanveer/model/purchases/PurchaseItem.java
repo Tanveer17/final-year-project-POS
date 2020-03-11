@@ -1,10 +1,9 @@
-package com.tanveer.entities.list;
+package com.tanveer.model.purchases;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.control.Button;
 
 import java.time.LocalDate;
 
@@ -13,24 +12,26 @@ public class PurchaseItem {
     private IntegerProperty purchaseId = new SimpleIntegerProperty();
     private LocalDate purchaseDate;
     private DoubleProperty pricePerMeter = new SimpleDoubleProperty();
-    private IntegerProperty noOfMetersPurchased = new SimpleIntegerProperty();
+    private DoubleProperty noOfMetersPurchased = new SimpleDoubleProperty();
+    private DoubleProperty pricePerPiece = new SimpleDoubleProperty();
+    private DoubleProperty noOfPiecesPurchased = new SimpleDoubleProperty();
     private DoubleProperty totalPrice = new SimpleDoubleProperty();
     private DoubleProperty pricePaid = new SimpleDoubleProperty();
     private DoubleProperty priceRem  = new SimpleDoubleProperty();
-    private Button editButton;
 
-    public PurchaseItem(int itemId, int purchaseId, LocalDate purchaseDate, double pricePerMeter, int noOfMetersPurchased,
+    public PurchaseItem(int itemId, int purchaseId, LocalDate purchaseDate, double pricePerMeter, int noOfMetersPurchased, double pricePerPiece, int noOfPiecesPurchased,
                         double totalPrice, double pricePaid, double priceRem){
         this.setItemId(itemId);
         this.setPurchaseId(purchaseId);
         this.purchaseDate = purchaseDate;
         this.setPricePerMeter(pricePerMeter);
         this.setNoOfMetersPurchased(noOfMetersPurchased);
+        this.setPricePerPiece(pricePerPiece);
+        this.setNoOfPiecesPurchased(noOfPiecesPurchased);
         this.setTotalPrice(totalPrice);
         this.setPricePaid(pricePaid);
         this.setPriceRem(priceRem);
-        this.editButton = new Button("Edit");
-        this.editButton.setId("button" + this.itemId.get());
+
     }
 
     public PurchaseItem(LocalDate purchaseDate, double pricePerMeter, int noOfMetersPurchased,
@@ -41,8 +42,6 @@ public class PurchaseItem {
         this.setTotalPrice(totalPrice);
         this.setPricePaid(pricePaid);
         this.setPriceRem(priceRem);
-        this.editButton = new Button("Edit");
-        this.editButton.setId("button" + this.itemId.get());
     }
 
 
@@ -90,16 +89,40 @@ public class PurchaseItem {
         this.pricePerMeter.set(pricePerMeter);
     }
 
-    public int getNoOfMetersPurchased() {
+    public double getNoOfMetersPurchased() {
         return noOfMetersPurchased.get();
     }
 
-    public IntegerProperty noOfMetersPurchasedProperty() {
+    public DoubleProperty noOfMetersPurchasedProperty() {
         return noOfMetersPurchased;
     }
 
     public void setNoOfMetersPurchased(int noOfMetersPurchased) {
         this.noOfMetersPurchased.set(noOfMetersPurchased);
+    }
+
+    public double getPricePerPiece() {
+        return pricePerPiece.get();
+    }
+
+    public DoubleProperty pricePerPieceProperty() {
+        return pricePerPiece;
+    }
+
+    public void setPricePerPiece(double pricePerPiece) {
+        this.pricePerPiece.set(pricePerPiece);
+    }
+
+    public double getNoOfPiecesPurchased() {
+        return noOfPiecesPurchased.get();
+    }
+
+    public DoubleProperty noOfPiecesPurchasedProperty() {
+        return noOfPiecesPurchased;
+    }
+
+    public void setNoOfPiecesPurchased(int noOfPiecesPurchased) {
+        this.noOfPiecesPurchased.set(noOfPiecesPurchased);
     }
 
     public double getTotalPrice() {
@@ -138,11 +161,5 @@ public class PurchaseItem {
         this.priceRem.set(priceRem);
     }
 
-    public Button getEditButton() {
-        return editButton;
-    }
 
-    public void setEditButton(Button editButton) {
-        this.editButton = editButton;
-    }
 }

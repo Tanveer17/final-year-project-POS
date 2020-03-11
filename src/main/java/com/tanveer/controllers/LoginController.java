@@ -38,7 +38,7 @@ public class LoginController {
         if(true) {
             Stage primaryStage = Main.getPrimaryStage();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
-            primaryStage.setScene(new Scene(root, 1000, 700));
+            primaryStage.setScene(new Scene(root, 1400, 700));
             primaryStage.setTitle("Attire Cloths");
             primaryStage.show();
             Rectangle2D bounds = Screen.getPrimary().getVisualBounds();

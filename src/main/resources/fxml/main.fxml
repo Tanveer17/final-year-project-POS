@@ -41,11 +41,20 @@
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="saleBtn" stylesheets="@style.css">
+            <Button fx:id="saleBtn" onAction="#showSaleStage" stylesheets="@style.css">
                 <graphic>
                     <ImageView fitHeight="150.0" fitWidth="150.0">
                         <image>
                             <Image url="@/icons/sale.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="inventoryBtn" onAction="#showInventoryStage" stylesheets="@style.css">
+                <graphic>
+                    <ImageView fitHeight="150.0" fitWidth="150.0">
+                        <image>
+                            <Image url="@/icons/shelf.png" />
                         </image>
                     </ImageView>
                 </graphic>

@@ -1,5 +1,7 @@
 package com.tanveer.controllers;
 
+import com.tanveer.controllers.dialogcontrollers.AddItemController;
+import com.tanveer.controllers.dialogcontrollers.AddSupplierController;
 import com.tanveer.model.database.ItemRepository;
 import com.tanveer.model.database.PurchaseRepository;
 import com.tanveer.model.database.StockRepository;
@@ -19,6 +21,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
@@ -26,6 +29,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -69,8 +73,6 @@ public class PurchaseController {
     @FXML
     private Label supplierAddressLabel;
     @FXML
-    private ListView supplierItemsList;
-    @FXML
     private TitledPane supplierSection;
     @FXML
     private BorderPane parent;
@@ -86,6 +88,8 @@ public class PurchaseController {
     private Label currentlyInStockMetersLabel;
     @FXML
     private Label currentlyInStockPiecesLabel;
+    @FXML
+    private Label supplierPhone;
     private ObservableList<PurchaseItem> purchaseItems;
     private ObservableList<ItemSupplier> supplersList;
     private Deque<ObservableList<ListItem>> observableLists;
@@ -103,6 +107,7 @@ public class PurchaseController {
 
     @SuppressWarnings("Unchecked")
     public void initialize(){
+
         //initializingdata models
         itemRepository = new ItemRepository();
         purchaseRepository = new PurchaseRepository();
@@ -114,6 +119,8 @@ public class PurchaseController {
         purchaseItems = purchaseRepository.getPurchases();
         supplersList = supplierRepository.getSuppliers();
         stocks = stockRepository.getStock();
+
+        System.out.println(supplersList == supplierRepository.getSuppliers());
 
         eventListeners();
         setContextMenu();
@@ -254,6 +261,18 @@ public class PurchaseController {
     }
 
 
+    @FXML
+    public void getBack(){
+        if(observableLists.size() > 1) {
+            observableLists.pop();
+            list.setItems(observableLists.peek());
+            if(observableLists.size() == 1){
+                backBtn.disableProperty().setValue(true);
+            }
+        }
+    }
+
+
     private void editListItem(Object item){
         if(item instanceof ItemSupplier){
             System.out.println("casting item to item supp");
@@ -269,62 +288,60 @@ public class PurchaseController {
 
     private void editSupplierItem(ItemSupplier itemSupplier){
 
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(parent.getScene().getWindow());
-        dialog.setTitle("EDIT SUPPLIER");
-        dialog.setHeaderText("Please make the required changes");
 
-        Label name = new Label("Name: ");
-        Label address = new Label("Address: ");
-        TextField nameInput = new TextField();
-        TextField addressInput = new TextField();
-
-        GridPane grid = new GridPane();
-        grid.setHgap(5);
-        grid.setVgap(5);
-        grid.add(name, 1, 1);
-        grid.add(nameInput, 2, 1);
-        grid.add(address, 1, 2);
-        grid.add(addressInput, 2, 2);
-        dialog.getDialogPane().setContent(grid);
-        nameInput.setText(itemSupplier.getName());
-        addressInput.setText(itemSupplier.getAddress());
-
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        Optional<ButtonType> result = dialog.showAndWait();
-
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-
-        }
-        System.out.println("editing supplier item");
-        System.out.println(itemSupplier.getId());
     }
 
     private void editItem(Item item){
-        System.out.println("edit item");
-        System.out.println(item.getId());
+
     }
 
-    @FXML
-    public void getBack(){
-        if(observableLists.size() > 1) {
-            observableLists.pop();
-            list.setItems(observableLists.peek());
-            if(observableLists.size() == 1){
-                backBtn.disableProperty().setValue(true);
-            }
-        }
-    }
 
     @FXML
     public void addSupplier(){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(parent.getScene().getWindow());
+        dialog.setTitle("Add Supplier");
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/fxml/dialogs/addSupplierDialog.fxml"));
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+        Optional<ButtonType> result = dialog.showAndWait();
+        AddSupplierController controller = fxmlLoader.getController();
+
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+                controller.addSupplier();
+        }
 
     }
 
     @FXML
     public void addItem(){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(parent.getScene().getWindow());
+        dialog.setTitle("Add new Item");
 
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/fxml/dialogs/addItemDialog.fxml"));
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+        Optional<ButtonType> result = dialog.showAndWait();
+        AddItemController controller = fxmlLoader.getController();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            controller.addItem();
+
+        }
     }
 
     @FXML
@@ -405,11 +422,9 @@ public class PurchaseController {
 
                         else if(isSupplierList){
                             ItemSupplier supplier = (ItemSupplier)observable.getValue();
-                            ObservableList<String> supplierItems = FXCollections.observableArrayList();
                             supplierNameLabel.setText(supplier.getName());
                             supplierAddressLabel.setText(supplier.getAddress());
-                            supplierItems.addAll("grase","srass","saam,d","furana","khurana");
-                            supplierItemsList.setItems(supplierItems);
+                            supplierPhone.setText(supplier.getPhoneNumber());
                             supplierSection.setVisible(true);
 
 

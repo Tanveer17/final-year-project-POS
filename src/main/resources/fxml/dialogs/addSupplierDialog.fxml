@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<DialogPane fx:id="parent" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tanveer.controllers.dialogcontrollers.AddSupplierController">
+    <content>
+        <GridPane hgap="10" prefHeight="84.0" prefWidth="259.0" vgap="10">
+            <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="name" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Label text="Address" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <Label text="Phone #" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="phone" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         <TextField fx:id="address" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+
+
+
+        </GridPane>
+    </content>
+</DialogPane>

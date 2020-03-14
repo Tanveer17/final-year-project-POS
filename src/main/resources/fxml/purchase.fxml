@@ -103,12 +103,8 @@
                            <Label fx:id="supplierNameLabel" layoutX="283.0" layoutY="40.0" prefHeight="14.0" prefWidth="135.0" text="Label" />
                            <Label layoutX="149.0" layoutY="101.0" text="Address" />
                            <Label fx:id="supplierAddressLabel" layoutX="283.0" layoutY="101.0" prefHeight="16.0" prefWidth="505.0" text="Label" />
-                           <Label layoutX="149.0" layoutY="166.0" text="Items" />
-                           <VBox layoutX="268.0" layoutY="166.0" prefHeight="216.0" prefWidth="104.0">
-                              <children>
-                                 <ListView fx:id="supplierItemsList" prefHeight="241.0" prefWidth="104.0" />
-                              </children>
-                           </VBox>
+                           <Label layoutX="149.0" layoutY="166.0" text="Phone" />
+                           <Label fx:id="supplierPhone" layoutX="283.0" layoutY="166.0" prefHeight="16.0" prefWidth="458.0" text="Label" />
                         </children>
                      </AnchorPane>
                  </content>

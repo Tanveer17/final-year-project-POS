@@ -20,6 +20,14 @@ CREATE TABLE `items`(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                               meters_in_a_suit DECIMAL(5,2),
                               FOREIGN KEY (supplier_id) REFERENCES suppliers(id));
 
+CREATE TABLE item_price_history(price_id INT AUTO_INCREMENT PRIMARY KEY,
+                                 item_id INT NOT NULL,
+                                 price_per_meter DECIMAL(10,2),
+                                 price_per_suit DECIMAL(10,2),
+                                 fromDate DATE NOT NULL,
+                                 toDate DATE
+                                 );
+
 
 DROP TABLE IF EXISTS `expenses`;
 
@@ -64,3 +72,6 @@ CREATE TABLE `stocks` (item_id INT NOT NULL PRIMARY KEY,
                        currently_in_stock_meters DECIMAL(20,3),
                        currently_in_stock_pieces DECIMAL(20,3),
                        FOREIGN KEY(item_id) REFERENCES items(id));
+
+
+

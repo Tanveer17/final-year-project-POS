@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 public class MainController {
 
+    private static Stage dashboardStage;
     @FXML
     private Button dashBoardBtn;
     @FXML
@@ -18,8 +19,7 @@ public class MainController {
     private Button purchasesBtn;
     @FXML
     private Button saleBtn;
-    @FXML
-    private Button inventoryBtn;
+
 
 
     public void initialize(){
@@ -32,8 +32,18 @@ public class MainController {
         dashBoardBtn.setCursor(Cursor.HAND);
         purchasesBtn.setCursor(Cursor.HAND);
         saleBtn.setCursor(Cursor.HAND);
-        inventoryBtn.setCursor(Cursor.HAND);
     }
+
+    @FXML
+    public void showDashboardStage() throws Exception{
+        dashboardStage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/dashboard.fxml"));
+        Scene scene = new Scene(root,1200,600);
+        dashboardStage.setTitle("Purchases");
+        dashboardStage.setScene(scene);
+        dashboardStage.show();
+    }
+
 
     @FXML
     public void showPurchaseStage() throws Exception{
@@ -67,15 +77,7 @@ public class MainController {
         stage.show();
     }
 
-    @FXML
-    public void showInventoryStage() throws Exception{
-        Stage stage = new Stage();
-        Parent root  = FXMLLoader.load(getClass().getResource("/fxml/inventory.fxml"));
-        Scene scene = new Scene(root,800,655);
-        stage.setTitle("SALES");
-        stage.setScene(scene);
-        stage.show();
-
+    public static Stage getDashboardStage() {
+        return dashboardStage;
     }
-
 }

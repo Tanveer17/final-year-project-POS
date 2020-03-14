@@ -14,7 +14,7 @@
 
     <center>
         <HBox alignment="center" prefHeight="367.0" prefWidth="972.0" spacing="100">
-            <Button fx:id="dashBoardBtn" stylesheets="@style.css">
+            <Button fx:id="dashBoardBtn" onAction="#showDashboardStage" stylesheets="@style.css">
                 <graphic>
                     <ImageView fitHeight="200.0" fitWidth="150.0">
                         <image>
@@ -46,15 +46,6 @@
                     <ImageView fitHeight="150.0" fitWidth="150.0">
                         <image>
                             <Image url="@/icons/sale.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-            </Button>
-            <Button fx:id="inventoryBtn" onAction="#showInventoryStage" stylesheets="@style.css">
-                <graphic>
-                    <ImageView fitHeight="150.0" fitWidth="150.0">
-                        <image>
-                            <Image url="@/icons/shelf.png" />
                         </image>
                     </ImageView>
                 </graphic>

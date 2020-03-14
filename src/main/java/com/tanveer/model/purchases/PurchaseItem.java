@@ -19,7 +19,7 @@ public class PurchaseItem {
     private DoubleProperty pricePaid = new SimpleDoubleProperty();
     private DoubleProperty priceRem  = new SimpleDoubleProperty();
 
-    public PurchaseItem(int itemId, int purchaseId, LocalDate purchaseDate, double pricePerMeter, int noOfMetersPurchased, double pricePerPiece, int noOfPiecesPurchased,
+    public PurchaseItem(int itemId, int purchaseId, LocalDate purchaseDate, double pricePerMeter, double noOfMetersPurchased, double pricePerPiece, double noOfPiecesPurchased,
                         double totalPrice, double pricePaid, double priceRem){
         this.setItemId(itemId);
         this.setPurchaseId(purchaseId);
@@ -34,7 +34,7 @@ public class PurchaseItem {
 
     }
 
-    public PurchaseItem(LocalDate purchaseDate, double pricePerMeter, int noOfMetersPurchased,
+    public PurchaseItem(LocalDate purchaseDate, double pricePerMeter, double noOfMetersPurchased,
                         double totalPrice, double pricePaid, double priceRem){
         this.purchaseDate = purchaseDate;
         this.setPricePerMeter(pricePerMeter);
@@ -97,7 +97,7 @@ public class PurchaseItem {
         return noOfMetersPurchased;
     }
 
-    public void setNoOfMetersPurchased(int noOfMetersPurchased) {
+    public void setNoOfMetersPurchased(double noOfMetersPurchased) {
         this.noOfMetersPurchased.set(noOfMetersPurchased);
     }
 
@@ -121,7 +121,7 @@ public class PurchaseItem {
         return noOfPiecesPurchased;
     }
 
-    public void setNoOfPiecesPurchased(int noOfPiecesPurchased) {
+    public void setNoOfPiecesPurchased(double noOfPiecesPurchased) {
         this.noOfPiecesPurchased.set(noOfPiecesPurchased);
     }
 

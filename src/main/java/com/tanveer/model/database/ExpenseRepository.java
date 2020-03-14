@@ -5,6 +5,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 
 public class ExpenseRepository {
@@ -22,8 +25,25 @@ public class ExpenseRepository {
     }
 
     private void setDatabaseExpensesData(){
-        expenses.add(new Expense(1,"salaery", LocalDate.now(),44.4));
-        expenses.add(new Expense(2,"salaery", LocalDate.now(),105.4));
+
+        try(Statement statement = connection.createStatement()){
+            String sql = "SELECT * FROM expenses";
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while(resultSet.next()){
+                int id = resultSet.getInt(1);
+                String description = resultSet.getString(2);
+                LocalDate date = resultSet.getDate(3).toLocalDate();
+                double amount = resultSet.getDouble(4);
+
+                expenses.add(new Expense(id,description,date,amount));
+
+            }
+
+        }
+        catch(SQLException s){
+            s.printStackTrace();
+        }
     }
 
 }

@@ -34,11 +34,11 @@ public class LoginController {
 
 
 
-    public void login() throws IOException {
+    public void login() throws Exception {
         if(true) {
             Stage primaryStage = Main.getPrimaryStage();
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
-            primaryStage.setScene(new Scene(root, 1400, 700));
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/dashboard.fxml"));
+            primaryStage.setScene(new Scene(root, 1200, 600));
             primaryStage.setTitle("Attire Cloths");
             primaryStage.show();
             Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
@@ -46,11 +46,22 @@ public class LoginController {
             double y = bounds.getMinY() + (bounds.getHeight() - primaryStage.getHeight())/2.0;
             primaryStage.setX(x);
             primaryStage.setY(y);
+
+            init();
         }
         else{
             errorMessage.setVisible(true);
 
         }
+    }
+    private void init() throws ClassNotFoundException{
+//        Class.forName("com.tanveer.model.database.Database");
+//        Class.forName("com.tanveer.model.database.SupplierRepository");
+//        Class.forName("com.tanveer.model.database.ExpenseRepository");
+//        Class.forName("com.tanveer.model.database.ItemRepository");
+//        Class.forName("com.tanveer.model.database.StockRepository");
+//        Class.forName("com.tanveer.model.database.SaleRepository");
+//        Class.forName("com.tanveer.model.database.PurchaseRepository");
     }
 
 }

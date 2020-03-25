@@ -6,6 +6,7 @@ import java.time.Period;
 import java.time.YearMonth;
 import java.util.ResourceBundle;
 
+import com.tanveer.Main;
 import com.tanveer.model.database.SaleRepository;
 import com.tanveer.model.sale.Sale;
 import javafx.collections.ObservableList;
@@ -36,7 +37,7 @@ public class DashboardController{
 
     public void initialize() {
         makeStageDrageable();
-        saleRepository = new SaleRepository();
+        saleRepository = SaleRepository.getInstance();
         sales = saleRepository.getSales();
         settingSaleChart();
 
@@ -84,23 +85,23 @@ public class DashboardController{
         parent.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                MainController.getDashboardStage().setX(event.getScreenX() - xOffset);
-                MainController.getDashboardStage().setY(event.getScreenY() - yOffset);
-                MainController.getDashboardStage().setOpacity(0.7f);
+                Main.getPrimaryStage().setX(event.getScreenX() - xOffset);
+                Main.getPrimaryStage().setY(event.getScreenY() - yOffset);
+                Main.getPrimaryStage().setOpacity(0.7f);
             }
         });
         parent.setOnDragDone((e) -> {
-            MainController.getDashboardStage().setOpacity(1.0f);
+            Main.getPrimaryStage().setOpacity(1.0f);
         });
         parent.setOnMouseReleased((e) -> {
-            MainController.getDashboardStage().setOpacity(1.0f);
+            Main.getPrimaryStage().setOpacity(1.0f);
         });
 
     }
 
     @FXML
     public void showPurchaseStage()throws Exception{
-        Stage stage = MainController.getDashboardStage();
+        Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/purchase.fxml"));
         Scene scene = new Scene(root,1200,600);
         stage.setTitle("Purchases");
@@ -111,7 +112,7 @@ public class DashboardController{
 
     @FXML
     public void showExpenseStage() throws Exception{
-        Stage stage  = MainController.getDashboardStage();
+        Stage stage  = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/expanses.fxml"));
         Scene scene = new Scene(root,800,655);
         stage.setTitle("Expanses");
@@ -122,7 +123,7 @@ public class DashboardController{
 
     @FXML
     public void showSaleStage() throws Exception{
-        Stage stage = MainController.getDashboardStage();
+        Stage stage = new Stage();
         Parent root  = FXMLLoader.load(getClass().getResource("/fxml/sales.fxml"));
         Scene scene = new Scene(root,800,655);
         stage.setTitle("SALES");

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<DialogPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="328.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tanveer.controllers.dialogcontrollers.AddItemController">
+<DialogPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="328.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"  >
     <content>
         <GridPane hgap="10" minWidth="-Infinity" prefHeight="253.0" prefWidth="326.0" vgap="10">
             <Label text="Item Code" GridPane.columnIndex="0" GridPane.rowIndex="0" />

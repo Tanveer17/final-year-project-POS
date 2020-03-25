@@ -28,7 +28,19 @@ public class Sale {
         setProfit(profit);
     }
 
-    public Sale(Item item,LocalDate saleDate,String saleTime,double saleAmount,double profit) {
+    public Sale(Item item,LocalDate saleDate,String saleTime,double noOfMetersSold,double noOfPiecesSold, double saleAmount,double profit) {
+        this.item = item;
+        this.saleDate = saleDate;
+        this.saleTime = saleTime;
+        setNoOfMetersSold(noOfMetersSold);
+        setNoOfPiecesSold(noOfPiecesSold);
+        setSaleAmount(saleAmount);
+        setProfit(profit);
+    }
+
+
+
+    public Sale(Item item, LocalDate saleDate, String saleTime, double saleAmount, double profit) {
         this.item = item;
         this.saleDate = saleDate;
         this.saleTime = saleTime;

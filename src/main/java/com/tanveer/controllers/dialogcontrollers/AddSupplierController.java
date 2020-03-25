@@ -19,7 +19,7 @@ public class AddSupplierController {
 
 
     public void initialize(){
-        supplierRepository = new SupplierRepository();
+        supplierRepository = SupplierRepository.getInstance();
     }
 
     public  void addSupplier(){

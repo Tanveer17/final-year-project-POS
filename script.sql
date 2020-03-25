@@ -25,7 +25,8 @@ CREATE TABLE item_price_history(price_id INT AUTO_INCREMENT PRIMARY KEY,
                                  price_per_meter DECIMAL(10,2),
                                  price_per_suit DECIMAL(10,2),
                                  fromDate DATE NOT NULL,
-                                 toDate DATE
+                                 toDate DATE,
+                                 FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE ON UPDATE CASCADE
                                  );
 
 
@@ -49,7 +50,7 @@ CREATE TABLE `purchases` (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                           total_price DECIMAL(10,2) NOT NULL,
                           price_paid DECIMAL(10,2),
                           price_rem DECIMAL(10,2),
-                          FOREIGN KEY (item_id) REFERENCES items(id));
+                          FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE ON UPDATE CASCADE );
 
 DROP TABLE IF EXISTS `sales`;
 
@@ -61,7 +62,7 @@ CREATE TABLE `sales` (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                       no_of_suits_sold DECIMAL(5,2),
                       amount DECIMAL(10,2) NOT NULL,
                       profit DECIMAL(10,2),
-                      FOREIGN KEY (item_id) REFERENCES items(id));
+                      FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE ON UPDATE CASCADE);
 
 
 DROP TABLE IF EXISTS `stocks`;
@@ -71,7 +72,9 @@ CREATE TABLE `stocks` (item_id INT NOT NULL PRIMARY KEY,
                        total_pieces_purchases DECIMAL(20,3),
                        currently_in_stock_meters DECIMAL(20,3),
                        currently_in_stock_pieces DECIMAL(20,3),
-                       FOREIGN KEY(item_id) REFERENCES items(id));
+                       FOREIGN KEY(item_id) REFERENCES items(id) ON DELETE CASCADE ON UPDATE CASCADE);
+
+
 
 
 

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<DialogPane fx:id="parent" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tanveer.controllers.dialogcontrollers.AddSupplierController">
+<DialogPane fx:id="parent" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" >
     <content>
         <GridPane hgap="10" prefHeight="84.0" prefWidth="259.0" vgap="10">
             <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />

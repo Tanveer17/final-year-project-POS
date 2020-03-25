@@ -1,7 +1,6 @@
 package com.tanveer.controllers;
 
-import com.tanveer.controllers.dialogcontrollers.AddItemController;
-import com.tanveer.controllers.dialogcontrollers.AddSupplierController;
+import com.tanveer.controllers.dialogcontrollers.*;
 import com.tanveer.model.database.ItemRepository;
 import com.tanveer.model.database.PurchaseRepository;
 import com.tanveer.model.database.StockRepository;
@@ -17,6 +16,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -31,6 +31,7 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Optional;
@@ -97,6 +98,7 @@ public class PurchaseController {
     private boolean isPurchasedList = false;
     private boolean isSupplierList = false;
     private ContextMenu contextMenu;
+    private ContextMenu tableContextMenu;
     private PurchaseRepository purchaseRepository;
     private ItemRepository itemRepository;
     private StockRepository stockRepository;
@@ -109,10 +111,10 @@ public class PurchaseController {
     public void initialize(){
 
         //initializingdata models
-        itemRepository = new ItemRepository();
-        purchaseRepository = new PurchaseRepository();
-        supplierRepository = new SupplierRepository();
-        stockRepository = new StockRepository();
+        itemRepository = ItemRepository.getInstance();
+        purchaseRepository = PurchaseRepository.getInstance();
+        supplierRepository = SupplierRepository.getInstance();
+        stockRepository = StockRepository.getInstance();
 
         //initializing collections
         items = itemRepository.getItems();
@@ -157,6 +159,7 @@ public class PurchaseController {
         TableColumn<PurchaseItem, DoubleProperty> priceRemColumn = new TableColumn<>("Price Remaining");
         priceRemColumn.setCellValueFactory(new PropertyValueFactory<>("priceRem"));
         System.out.println("in set purchasetable");
+        purchaseItems.sort((p1,p2) -> p2.getPurchaseDate().compareTo(p1.getPurchaseDate()));
 
 
 
@@ -195,6 +198,7 @@ public class PurchaseController {
         //setting stocks
         Optional<Stock> stock = stocks.stream().filter(s -> s.getItem().equals(tempItem)).findAny();
         if(stock.isPresent()) {
+            System.out.println("present");
             double totalMeterPurchases = stock.get().getTotalMeterPurchases();
             double totalPiecesPurchases = stock.get().getTotalPiecesPurchases();
             double currentlyInStockMeters = stock.get().getCurrentlyInStockMeters();
@@ -286,12 +290,106 @@ public class PurchaseController {
         }
     }
 
+    private void deleteListItem(Object item){
+        System.out.println("purchase");
+        if(item instanceof ItemSupplier){
+            System.out.println("casting item to item supp");
+            ItemSupplier itemSupplier = ((ItemSupplier) item);
+            deleteSupplierItem(itemSupplier);
+        }
+        else if(item instanceof Item){
+            System.out.println("casting to item");
+            Item item1 = ((Item) item);
+            deleteItem(item1);
+        }
+    }
+
+
+    private void editItem(Item item){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(parent.getScene().getWindow());
+        dialog.setTitle("Update Item");
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/fxml/dialogs/updateItemDialog.fxml"));
+        UpdateItemController controller = new UpdateItemController(item);
+        fxmlLoader.setController(controller);
+
+
+
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+        Optional<ButtonType> result = dialog.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            controller.updateItem();
+
+        }
+    }
     private void editSupplierItem(ItemSupplier itemSupplier){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(parent.getScene().getWindow());
+        dialog.setTitle("Update Item");
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/fxml/dialogs/updateSupplierDialog.fxml"));
+        UpdateSupplierController controller = new UpdateSupplierController(itemSupplier);
+        fxmlLoader.setController(controller);
+
+
+
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+        Optional<ButtonType> result = dialog.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            controller.updateSupplier();
+
+        }
 
 
     }
 
-    private void editItem(Item item){
+
+
+
+    private void deleteSupplierItem(ItemSupplier itemSupplier){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Item will be deleted");
+        alert.setContentText("Item and all of its related data will be lost");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            supplierRepository.deleteItem(itemSupplier);
+        }
+
+    }
+
+    private void deleteItem(Item item){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Item will be deleted");
+        alert.setContentText("Item and all of its related data will be lost");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+           itemRepository.deleteItem(item);
+        }
 
     }
 
@@ -346,8 +444,69 @@ public class PurchaseController {
 
     @FXML
     public void purchaseItem(){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(parent.getScene().getWindow());
+        dialog.setTitle("Add Supplier");
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/fxml/dialogs/addPurchaseDialog.fxml"));
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+        Optional<ButtonType> result = dialog.showAndWait();
+        AddPurchaseController controller = fxmlLoader.getController();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            controller.addPurchaseItem();
+
+        }
 
     }
+
+    private void editPurchaseItem(PurchaseItem purchaseItem){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(parent.getScene().getWindow());
+        dialog.setTitle("Update Purchase");
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/fxml/dialogs/updatePurchaseItemDialog.fxml"));
+        UpdatePurchaseItemController controller = new UpdatePurchaseItemController(purchaseItem);
+        fxmlLoader.setController(controller);
+
+
+
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+        Optional<ButtonType> result = dialog.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            controller.updatePurchaseItem();
+
+        }
+    }
+
+    private void deletePurchaseItem(PurchaseItem item){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Purchase will be deleted");
+        alert.setContentText("Purchase will be removed fron history and you cant access it again");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            purchaseRepository.deletePurchaseItem(item);
+        }
+    }
+
 
     @FXML
     public void close(){
@@ -373,7 +532,7 @@ public class PurchaseController {
                         tableRow.setContextMenu(null);
                     }
                     else{
-                        tableRow.setContextMenu(contextMenu);
+                        tableRow.setContextMenu(tableContextMenu);
                     }
                 });
                 return tableRow;
@@ -382,6 +541,43 @@ public class PurchaseController {
     }
 
     private void eventListeners(){
+        stocks.addListener(new ListChangeListener<Stock>() {
+            @Override
+            public void onChanged(Change<? extends Stock> c) {
+                if (isPurchasedList) {
+                    System.out.println("changed");
+                    purchaseTable.getColumns().clear();
+                    purchaseTable.getItems().clear();
+                    Item item = (Item)list.getSelectionModel().getSelectedItem();
+                    System.out.println(purchaseItems);
+                    ObservableList<PurchaseItem> filtered = FXCollections.observableArrayList(purchaseItems.stream()
+                            .filter(i -> i.getItemId() == item.getId()).collect(Collectors.toList()));
+
+                    settingItemAttributes(item, filtered);
+                    setPurchaseTable(filtered);
+
+
+
+                }
+            }
+        });
+        purchaseRepository.getPurchases().addListener(new ListChangeListener<PurchaseItem>() {
+            @Override
+            public void onChanged(Change<? extends PurchaseItem> c) {
+                if (isPurchasedList) {
+                    clearData();
+                    Item item = (Item)list.getSelectionModel().getSelectedItem();
+                    ObservableList<PurchaseItem> filtered = FXCollections.observableArrayList(purchaseItems.stream()
+                            .filter(i -> i.getItemId() == item.getId()).collect(Collectors.toList()));
+
+                    setPurchaseTable(filtered);
+                    settingItemAttributes(item, filtered);
+                    makingComponentsVisible();
+                }
+            }
+        });
+
+
         list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
@@ -391,6 +587,7 @@ public class PurchaseController {
                 Platform.runLater(() -> {
                     Object selectedItem = observable.getValue();
                     if(selectedItem != null) {
+                        clearData();
                         if(selectedItem instanceof ListItem ) {
                             backBtn.disableProperty().setValue(false);
                             if (selectedItem.toString().equalsIgnoreCase("suppliers")) {
@@ -438,7 +635,9 @@ public class PurchaseController {
 
     private void setContextMenu(){
         contextMenu = new ContextMenu();
+        tableContextMenu = new ContextMenu();
         MenuItem editItem = new MenuItem("Edit");
+        MenuItem deleteItem = new MenuItem("Delete");
         editItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -446,8 +645,37 @@ public class PurchaseController {
                 editListItem(listItem);
             }
         });
+
+        deleteItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Object listItem  = list.getSelectionModel().getSelectedItem();
+                deleteListItem(listItem);
+            }
+        });
         setItems();
-        contextMenu.getItems().add(editItem);
+        contextMenu.getItems().addAll(editItem,deleteItem);
+
+        MenuItem tableEditMenuItem = new MenuItem("Edit");
+        tableEditMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                PurchaseItem item = (PurchaseItem) purchaseTable.getSelectionModel().getSelectedItem();
+                editPurchaseItem(item);
+            }
+        });
+
+        MenuItem tableDeleteMenuItem = new MenuItem("Delete");
+        tableDeleteMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                PurchaseItem item = (PurchaseItem) purchaseTable.getSelectionModel().getSelectedItem();
+                deletePurchaseItem(item);
+
+            }
+        });
+
+        tableContextMenu.getItems().addAll(tableEditMenuItem,tableDeleteMenuItem);
 
 
         list.setCellFactory(new Callback<ListView, ListCell>() {

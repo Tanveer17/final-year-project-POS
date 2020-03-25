@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class PurchaseItem {
     private IntegerProperty itemId = new SimpleIntegerProperty();
@@ -23,6 +24,19 @@ public class PurchaseItem {
                         double totalPrice, double pricePaid, double priceRem){
         this.setItemId(itemId);
         this.setPurchaseId(purchaseId);
+        this.purchaseDate = purchaseDate;
+        this.setPricePerMeter(pricePerMeter);
+        this.setNoOfMetersPurchased(noOfMetersPurchased);
+        this.setPricePerPiece(pricePerPiece);
+        this.setNoOfPiecesPurchased(noOfPiecesPurchased);
+        this.setTotalPrice(totalPrice);
+        this.setPricePaid(pricePaid);
+        this.setPriceRem(priceRem);
+
+    }
+    public PurchaseItem(int itemId, LocalDate purchaseDate, double pricePerMeter, double noOfMetersPurchased, double pricePerPiece, double noOfPiecesPurchased,
+                        double totalPrice, double pricePaid, double priceRem){
+        this.setItemId(itemId);
         this.purchaseDate = purchaseDate;
         this.setPricePerMeter(pricePerMeter);
         this.setNoOfMetersPurchased(noOfMetersPurchased);
@@ -161,5 +175,16 @@ public class PurchaseItem {
         this.priceRem.set(priceRem);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PurchaseItem item = (PurchaseItem) o;
+        return Objects.equals(getPurchaseId(), item.getPurchaseId());
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPurchaseId());
+    }
 }

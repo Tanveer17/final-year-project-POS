@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<DialogPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="308.0" prefWidth="363.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tanveer.controllers.dialogcontrollers.AddPurchaseController">
+    <content>
+        <GridPane hgap="10" minWidth="-Infinity" prefHeight="286.0" prefWidth="399.0" vgap="10">
+            <Label text="Item" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <Label text="Price Per Meter" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <Label prefHeight="16.0" prefWidth="119.0" text="Meters Purchased" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <Label prefHeight="16.0" prefWidth="101.0" text="Price per Piece" GridPane.rowIndex="3" />
+            <Label text="Pieces Purchased" GridPane.rowIndex="4" />
+            <Label text="Total Price" GridPane.rowIndex="5" />
+            <ComboBox fx:id="item" prefHeight="26.0" prefWidth="191.0" promptText="Select Item" GridPane.columnIndex="1" />
+            <TextField fx:id="pricePerMeter" prefHeight="26.0" prefWidth="192.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="metersPurchased" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="pricePerPiece" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="piecesPurchased" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="totalPrice" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+         <Label text="Price Paid" GridPane.rowIndex="6" />
+         <TextField fx:id="pricePaid" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+
+            <columnConstraints>
+                <ColumnConstraints />
+                <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints maxHeight="41.0" minHeight="30.0" prefHeight="30.0" />
+                <RowConstraints maxHeight="44.0" minHeight="25.0" prefHeight="25.0" />
+                <RowConstraints maxHeight="35.0" minHeight="24.0" prefHeight="35.0" />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+            <RowConstraints />
+            </rowConstraints>
+
+
+
+        </GridPane>
+    </content>
+</DialogPane>

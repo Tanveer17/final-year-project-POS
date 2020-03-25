@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tanveer.controllers.ExpensesController">
+<BorderPane fx:id="parent" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tanveer.controllers.ExpensesController">
    <top>
-      <AnchorPane fx:id="parent" BorderPane.alignment="CENTER">
+      <AnchorPane  BorderPane.alignment="CENTER">
          <children>
             <TableView fx:id="expansesTable" layoutX="1.0" layoutY="64.0" prefHeight="389.0" prefWidth="793.0">
                <columnResizePolicy>

@@ -1,9 +1,10 @@
 package com.tanveer.model.expanses;
 
-import com.sun.org.glassfish.gmbal.Description;
+import com.tanveer.model.purchases.PurchaseItem;
 import javafx.beans.property.*;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Expense {
     private IntegerProperty id = new SimpleIntegerProperty();
@@ -66,5 +67,18 @@ public class Expense {
 
     public void setAmount(double amount) {
         this.amount.set(amount);
+    }
+
+    @Override
+    public int hashCode() {
+        return 7;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Expense item = (Expense) o;
+        return Objects.equals(getId(), item.getId());
     }
 }

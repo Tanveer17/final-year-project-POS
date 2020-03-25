@@ -19,6 +19,12 @@ public class Main extends Application {
 
     }
 
+    @Override
+    public void init() throws Exception {
+
+
+    }
+
     public static void main(String[] args) {
         launch(args);
     }

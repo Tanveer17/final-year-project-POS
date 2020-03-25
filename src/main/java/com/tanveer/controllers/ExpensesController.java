@@ -1,5 +1,9 @@
 package com.tanveer.controllers;
 
+import com.tanveer.controllers.dialogcontrollers.AddExpenseController;
+import com.tanveer.controllers.dialogcontrollers.AddSupplierController;
+import com.tanveer.controllers.dialogcontrollers.UpdateExpenseController;
+import com.tanveer.controllers.dialogcontrollers.UpdateItemController;
 import com.tanveer.model.database.ExpenseRepository;
 import com.tanveer.model.expanses.Expense;
 import javafx.beans.property.DoubleProperty;
@@ -8,12 +12,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import javax.swing.border.Border;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ExpensesController {
@@ -37,10 +46,12 @@ public class ExpensesController {
     private Label lastMonthExpansesLabel;
     @FXML
     private Label totalExpansesInTheTableLabel;
+    @FXML
+    private BorderPane parent;
 
 
     public void initialize(){
-        expenseRepository = new ExpenseRepository();
+        expenseRepository = ExpenseRepository.getInstance();
         expenseList = expenseRepository.getExpenseList();
         setExpensesTable();
 
@@ -56,38 +67,91 @@ public class ExpensesController {
     private void setContextMenu(){
         contextMenu = new ContextMenu();
         MenuItem edit  = new MenuItem("Edit");
-        contextMenu.getItems().add(edit);
+        MenuItem delete = new MenuItem("Delete");
+        contextMenu.getItems().addAll(edit,delete);
 
         edit.setOnAction(event -> {
                 Expense expense = (Expense) expansesTable.getSelectionModel().getSelectedItem();
+                editExpense(expense);
             });
+
+        delete.setOnAction(event -> {
+            Expense expense = (Expense) expansesTable.getSelectionModel().getSelectedItem();
+                 deleteExpense(expense);
+        });
         }
 
 
         //setting event handlers
     private void eventHandlers(){
         expenseList.addListener((ListChangeListener<? super Expense>) c -> {
-                expansesTable.getItems().add(expenseList.get(expenseList.size() - 1));
-                setLabels();
+            expansesTable.getColumns().clear();
+            expansesTable.getItems().clear();
+            setExpensesTable();
         });
+
 
     }
 
     // set expenses period
     private void setExpensesTable() {
         setRowFactory();
+
         TableColumn<Expense, StringProperty> descriptionColumn = new TableColumn<>("Description");
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         TableColumn<Expense, LocalDate> dateColumn = new TableColumn<>("Date");
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         TableColumn<Expense, DoubleProperty> amountColumn = new TableColumn<>("Amount");
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+//
 
         expansesTable.getColumns().addAll(descriptionColumn,dateColumn,amountColumn);
         expansesTable.getItems().addAll(expenseList);
         setLabels();
 
 
+    }
+
+    private void editExpense(Expense expense){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(parent.getScene().getWindow());
+        dialog.setTitle("Update Expense");
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/fxml/dialogs/updateExpenseDialog.fxml"));
+        UpdateExpenseController controller = new UpdateExpenseController(expense);
+        fxmlLoader.setController(controller);
+
+
+
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+        Optional<ButtonType> result = dialog.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            controller.updateExpense();
+
+        }
+
+    }
+
+    private void deleteExpense(Expense expense){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Expense will be deleted");
+        alert.setContentText("Expense will be removed fron history and you cant access it again");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            expenseRepository.deleteExpense(expense);
+        }
     }
 
 
@@ -164,6 +228,26 @@ public class ExpensesController {
 
     @FXML
     public void addExpanse(){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(parent.getScene().getWindow());
+        dialog.setTitle("Add Expense");
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/fxml/dialogs/addExpenseDialog.fxml"));
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+        Optional<ButtonType> result = dialog.showAndWait();
+        AddExpenseController controller = fxmlLoader.getController();
+
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            controller.addExpense();
+        }
 
     }
 

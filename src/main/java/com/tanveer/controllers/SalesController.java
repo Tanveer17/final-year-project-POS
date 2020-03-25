@@ -1,22 +1,34 @@
 package com.tanveer.controllers;
 
+import com.tanveer.controllers.dialogcontrollers.AddExpenseController;
+import com.tanveer.controllers.dialogcontrollers.AddSaleController;
+import com.tanveer.controllers.dialogcontrollers.UpdateExpenseController;
+import com.tanveer.controllers.dialogcontrollers.UpdateSaleController;
 import com.tanveer.model.database.ItemRepository;
 import com.tanveer.model.database.SaleRepository;
+import com.tanveer.model.expanses.Expense;
 import com.tanveer.model.purchases.Item;
 import com.tanveer.model.sale.Sale;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+import javafx.util.Callback;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class SalesController {
@@ -31,31 +43,39 @@ public class SalesController {
     @FXML
     private ListView<CheckBox> itemsListToBeFiltered;
     @FXML
-    private TableView<Sale> salesTable;
+    private TableView salesTable;
     @FXML
     private Label numOfItemsSoldLabel;
     @FXML
     private  Label totalAmountGainedLabel;
     @FXML
     private Label profitLabel;
+    @FXML
+    private MenuBar menuBar;
+    @FXML
+    private BorderPane parent;
+
+    private ContextMenu contextMenu;
 
 
     public void initialize(){
         //init model
-        itemRepository = new ItemRepository();
-        saleRepository  = new SaleRepository();
+        itemRepository = ItemRepository.getInstance();
+        saleRepository  = SaleRepository.getInstance();
 
         //init observable lists
-        items = itemRepository.getItems().stream().collect(Collectors.toMap(Item :: getId, item -> item));
         sales = saleRepository.getSales();
 
+        setContextMenu();
         populateList();
         setupSalesTable();
+        eventHandlers();
 
     }
 
     //populate this list of checkboxes to be filtered
     private void populateList(){
+        items = itemRepository.getItems().stream().collect(Collectors.toMap(Item :: getId, item -> item));
         for(Item item : items.values()){
             CheckBox checkBox  = new CheckBox(item.toString());
             checkBox.setAccessibleHelp(String.valueOf(item.getId()));
@@ -65,6 +85,7 @@ public class SalesController {
     }
 
     private void setupSalesTable(){
+        setRowFactory();
         TableColumn<Sale, StringProperty> itemColumn = new TableColumn<>("Item");
         itemColumn.setCellValueFactory(new PropertyValueFactory<>("item"));
         TableColumn<Sale, LocalDate> dateColumn = new TableColumn<>("Date");
@@ -154,7 +175,6 @@ public class SalesController {
                     .collect(Collectors.toList()));
         }
         else{
-            System.out.println(itemList.contains(sales.get(0)));
             filteredList = FXCollections.observableArrayList(sales.stream()
                     .filter(s -> itemList.contains(s.getItem())).collect(Collectors.toList()));
         }
@@ -200,5 +220,163 @@ public class SalesController {
 
     }
 
+    @FXML
+    public void addSuitSale(){
+        addSale("Add Suit Sale","/fxml/dialogs/addSuitSaleDialog.fxml","suit sale");
+
+    }
+
+    @FXML
+    public void addMetersSale(){
+        addSale("Add Meters Sale","/fxml/dialogs/addMetersSaleDialog.fxml","meters sale");
+
+    }
+
+    private void addSale(String label, String resource, String cntlr){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(parent.getScene().getWindow());
+        dialog.setTitle(label);
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource(resource));
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+        Optional<ButtonType> result = dialog.showAndWait();
+        if(cntlr.equalsIgnoreCase("suit sale")) {
+            AddSaleController controller = fxmlLoader.getController();
+
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                controller.addSuitSale();
+            }
+        }
+        else{
+            AddSaleController controller = fxmlLoader.getController();
+
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                controller.addMetersSale();
+            }
+        }
+    }
+
+    private void editSale(Sale sale){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(parent.getScene().getWindow());
+        dialog.setTitle("Update Sale");
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/fxml/dialogs/updateSaleDialog.fxml"));
+        UpdateSaleController controller = new UpdateSaleController(sale);
+        fxmlLoader.setController(controller);
+
+
+
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+        Optional<ButtonType> result = dialog.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            controller.updateSale();
+
+        }
+
+
+
+    }
+
+    private void deleteSale(Sale sale){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Sale will be deleted");
+        alert.setContentText("Sale will be removed fron history and you cant access it again");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            saleRepository.deleteSale(sale);
+        }
+
+    }
+
+    private void eventHandlers(){
+        sales.addListener((ListChangeListener<? super Sale>) c ->{
+            salesTable.getItems().clear();
+            salesTable.getColumns().clear();
+            itemsListToBeFiltered.getItems().clear();
+            populateList();
+            setupSalesTable();
+        });
+
+        itemRepository.getItems().addListener(new ListChangeListener<Item>() {
+            @Override
+            public void onChanged(Change<? extends Item> c) {
+                System.out.println("list changed");
+                itemsListToBeFiltered.getItems().clear();
+                populateList();
+            }
+        });
+    }
+
+    @FXML
+    public void close(){
+        Stage stage = (Stage) menuBar.getScene().getWindow();
+        stage.close();
+    }
+
+    private void setContextMenu(){
+        contextMenu = new ContextMenu();
+        MenuItem edit  = new MenuItem("Edit");
+        MenuItem delete = new MenuItem("Delete");
+        contextMenu.getItems().addAll(edit,delete);
+
+        edit.setOnAction(event -> {
+            Sale sale = (Sale) salesTable.getSelectionModel().getSelectedItem();
+            editSale(sale);
+        });
+
+        delete.setOnAction(event -> {
+            Sale sale= (Sale) salesTable.getSelectionModel().getSelectedItem();
+            deleteSale(sale);
+        });
+    }
+
+    private void setRowFactory() {
+
+        salesTable.setRowFactory(new Callback<TableView, TableRow>() {
+            @Override
+            public TableRow call(TableView param) {
+                TableRow tableRow = new TableRow() {
+                    @Override
+                    protected void updateItem(Object item, boolean empty) {
+                        super.updateItem(item, empty);
+                    }
+                };
+                tableRow.emptyProperty().addListener((obs, wasEmpty, isEmpty) -> {
+                    if (isEmpty) {
+                        tableRow.setContextMenu(null);
+                    } else {
+
+                        tableRow.setContextMenu(contextMenu);
+                    }
+                });
+                return tableRow;
+            }
+        });
+
+    }
+
 
 }
+

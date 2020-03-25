@@ -24,7 +24,7 @@
 <BorderPane fx:id="parent" prefHeight="617.0" prefWidth="1311.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tanveer.controllers.PurchaseController">
 
     <top>
-        <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+        <MenuBar fx:id="menuBar" style="-fx-background-color: wheat;" BorderPane.alignment="CENTER">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
@@ -50,7 +50,7 @@
     <left>
       <VBox BorderPane.alignment="CENTER_LEFT">
          <children>
-             <Button fx:id="backBtn" mnemonicParsing="false" onAction="#getBack" prefHeight="37.0" prefWidth="125.0">
+             <Button fx:id="backBtn" mnemonicParsing="false" onAction="#getBack" prefHeight="37.0" prefWidth="125.0" textFill="#908181">
                  <graphic>
                      <ImageView fitHeight="25.0" fitWidth="36.0" focusTraversable="true">
                          <image>
@@ -62,7 +62,7 @@
                      </ImageView>
                  </graphic>
              </Button>
-               <ListView fx:id="list" focusTraversable="false" prefHeight="400.0" prefWidth="125.0" style="" VBox.vgrow="ALWAYS">
+               <ListView fx:id="list" focusTraversable="false" prefHeight="400.0" prefWidth="125.0" VBox.vgrow="ALWAYS">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

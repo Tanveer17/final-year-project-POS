@@ -7,8 +7,23 @@ public class Item {
     private double pricePerSuit;
     private double pricePerMeter;
     private double metersInASuit;
+    private double profit_percentage;
 
-    public Item(int id, String name, ItemSupplier supplier,double pricePerSuit, double pricePerMeter, double metersInASuit) {
+    public Item(int id) {
+        this.id = id;
+    }
+
+    public Item(int id, String name, ItemSupplier supplier, double pricePerSuit, double pricePerMeter, double metersInASuit, double profit_percentage) {
+        this.id = id;
+        this.name = name;
+        this.supplier = supplier;
+        this.pricePerSuit = pricePerSuit;
+        this.pricePerMeter = pricePerMeter;
+        this.metersInASuit = metersInASuit;
+        this.profit_percentage = profit_percentage;
+    }
+
+    public Item(int id, String name, ItemSupplier supplier, double pricePerSuit, double pricePerMeter, double metersInASuit) {
         this.id = id;
         this.name = name;
         this.supplier = supplier;
@@ -17,7 +32,16 @@ public class Item {
         this.metersInASuit = metersInASuit;
     }
 
-    public Item(String name, ItemSupplier supplier,double pricePerSuit,double pricePerMeter, double metersInASuit) {
+    public Item(String name, ItemSupplier supplier, double pricePerSuit, double pricePerMeter, double metersInASuit, double profit_percentage) {
+        this.name = name;
+        this.supplier = supplier;
+        this.pricePerSuit = pricePerSuit;
+        this.pricePerMeter = pricePerMeter;
+        this.metersInASuit = metersInASuit;
+        this.profit_percentage = profit_percentage;
+    }
+
+    public Item(String name, ItemSupplier supplier, double pricePerSuit, double pricePerMeter, double metersInASuit) {
         this.name = name;
         this.supplier = supplier;
         this.pricePerSuit = pricePerSuit;

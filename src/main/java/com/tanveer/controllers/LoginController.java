@@ -55,13 +55,13 @@ public class LoginController {
         }
     }
     private void init() throws ClassNotFoundException{
-//        Class.forName("com.tanveer.model.database.Database");
-//        Class.forName("com.tanveer.model.database.SupplierRepository");
-//        Class.forName("com.tanveer.model.database.ExpenseRepository");
-//        Class.forName("com.tanveer.model.database.ItemRepository");
-//        Class.forName("com.tanveer.model.database.StockRepository");
-//        Class.forName("com.tanveer.model.database.SaleRepository");
-//        Class.forName("com.tanveer.model.database.PurchaseRepository");
+        Class.forName("com.tanveer.model.database.Database");
+        Class.forName("com.tanveer.model.database.SupplierRepository");
+        Class.forName("com.tanveer.model.database.ExpenseRepository");
+        Class.forName("com.tanveer.model.database.ItemRepository");
+        Class.forName("com.tanveer.model.database.StockRepository");
+        Class.forName("com.tanveer.model.database.SaleRepository");
+        Class.forName("com.tanveer.model.database.PurchaseRepository");
     }
 
 }
